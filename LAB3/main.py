@@ -4,8 +4,6 @@ import matplotlib.pyplot as plt
 import copy
 import math
 
-# 1. Для изображения sar_3.jpg найти наиболее протяженный участок
-# (выделить линии при помощи преобразования Хафа)
 
 
 image = cv2.imread('../image_proccessing/lab3/sar_3.jpg')
@@ -38,7 +36,6 @@ plt.imshow(line_image)
 plt.title('Увэренная в себе линия')
 plt.show()
 
-# 2. Для изображения sar_3.jpg провести исследование алгоритмов бинаризации, выделить участок дорожной полосы.
 
 def image_diff(image1, title1, image2, title2):
     plt.figure(figsize=(12,5))
@@ -53,7 +50,6 @@ def image_diff(image1, title1, image2, title2):
 
     plt.show()
 
-# Точечная бинаризация
 
 bin_img = copy.deepcopy(image_gray)
 T  = 80
@@ -61,13 +57,13 @@ bin_img[image_gray < T] = 0
 bin_img[image_gray >= T] = 255
 image_diff(image, 'Исходник', bin_img, 'Точечная бинаризация')
 
-# Бинаризация Отсу
+
 
 _,th2 = cv2.threshold(image_gray,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 
 image_diff(image, 'Исходник', th2, 'Бинаризация Отсу')
 
-# Адаптивная бинаризация
+
 
 th3 = cv2.adaptiveThreshold(image_gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
             cv2.THRESH_BINARY,71,21)
@@ -75,7 +71,7 @@ th3 = cv2.adaptiveThreshold(image_gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
 image_diff(image, 'Исходник', th3, 'Адаптивная бинаризация')
 
 
-# оператор Собеля
+
 
 scale = 1
 delta = 0
@@ -85,7 +81,7 @@ grad_y = cv2.Sobel(image_gray, ddepth, 0, 1, ksize=3, scale=scale, delta=delta, 
 th3=(grad_x - grad_x.min())*255
 image_diff(image, 'Исходник', th3, 'Оператор Собеля')
 
-# Canny
+
 
 edges = cv2.Canny(image_gray,100,200)
 image_diff(image, 'Исходник', edges, 'Canny')
